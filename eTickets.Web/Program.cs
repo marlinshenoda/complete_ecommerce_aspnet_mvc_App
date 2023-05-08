@@ -1,4 +1,4 @@
-using eTickets.Web.Data;
+using eTickets.Data.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

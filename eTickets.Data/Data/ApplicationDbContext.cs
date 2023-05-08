@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace eTickets.Web.Data
+namespace eTickets.Data.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
