@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace eTickets.Core.Entities
 {
+#nullable disable
+
     public class ApplicationUser : IdentityUser
     {
         [Display(Name = "Full name")]

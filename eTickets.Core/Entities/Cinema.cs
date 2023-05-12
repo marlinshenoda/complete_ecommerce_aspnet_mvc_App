@@ -2,6 +2,8 @@
 
 namespace eTickets.Core.Entities
 {
+#nullable disable
+
     public class Cinema
     {
         public int Id { get; set; }

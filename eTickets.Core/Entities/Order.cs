@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace eTickets.Core.Entities
 {
+#nullable disable
+
     public class Order
     {
         public int Id { get; set; }

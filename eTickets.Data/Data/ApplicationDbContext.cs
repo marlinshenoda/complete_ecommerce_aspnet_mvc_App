@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace eTickets.Data.Data
+namespace eTickets.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext <ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -25,5 +25,17 @@ namespace eTickets.Data.Data
 
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<Movie> Movies => Set<Movie>();
+        public DbSet<Actor> Actors => Set<Actor>();
+        public DbSet<Actor_Movie> Actors_Movies => Set<Actor_Movie>();
+        public DbSet<Cinema> Cinemas => Set<Cinema>();
+        public DbSet<Producer> Producers => Set<Producer>();
+
+
+        //Orders related tables
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<ShoppingCardItem> ShoppingCartItems => Set<ShoppingCardItem>();
+
     }
 }

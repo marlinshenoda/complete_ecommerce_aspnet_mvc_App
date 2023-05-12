@@ -1,5 +1,7 @@
 ﻿namespace eTickets.Core.Entities
 {
+#nullable disable
+
     public class Actor_Movie
     {
         public int MovieId { get; set; }

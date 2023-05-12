@@ -8,6 +8,8 @@ namespace eTickets.Core.Entities
 {
     public class ShoppingCardItem
     {
+#nullable disable
+
         public int Id { get; set; }
 
         public Movie Movie { get; set; }

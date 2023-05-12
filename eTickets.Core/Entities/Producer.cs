@@ -4,6 +4,8 @@ namespace eTickets.Core.Entities
 {
     public class Producer
     {
+#nullable disable
+
         public int Id { get; set; }
 
         //[Display(Name = "Profile Picture")]

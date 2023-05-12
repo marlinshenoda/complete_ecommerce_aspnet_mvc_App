@@ -2,6 +2,7 @@
 
 namespace eTickets.Core.Entities
 {
+    #nullable disable
     public class Actor
     {
         public int Id { get; set; }
