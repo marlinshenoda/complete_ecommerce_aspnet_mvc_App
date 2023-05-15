@@ -22,9 +22,7 @@ namespace eTickets.Web.Controllers
         // GET: Producers
         public async Task<IActionResult> Index()
         {
-              return _context.Producers != null ? 
-                          View(await _context.Producers.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Producers'  is null.");
+            return View(await _context.Producers.ToListAsync());
         }
 
         // GET: Producers/Details/5

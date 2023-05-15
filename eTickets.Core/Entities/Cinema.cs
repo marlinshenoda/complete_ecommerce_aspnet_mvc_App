@@ -8,7 +8,7 @@ namespace eTickets.Core.Entities
     {
         public int Id { get; set; }
 
-        //[Display(Name = "Cinema Logo")]
+        [Display(Name = "Cinema Logo")]
         //[Required(ErrorMessage = "Cinema logo is required")]
         public string Logo { get; set; }
 
@@ -16,7 +16,7 @@ namespace eTickets.Core.Entities
         //[Required(ErrorMessage = "Cinema name is required")]
         public string Name { get; set; }
 
-        //[Display(Name = "Description")]
+        [Display(Name = "Description")]
         //[Required(ErrorMessage = "Cinema description is required")]
         public string Description { get; set; }
 

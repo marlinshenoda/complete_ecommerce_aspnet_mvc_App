@@ -1,5 +1,6 @@
 using eTickets.Core.Entities;
 using eTickets.Data;
+using eTickets.Data.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,25 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 var app = builder.Build();
 builder.Services.AddControllersWithViews();
 
+// Seeddata
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+    //db.Database.EnsureDeleted();
+    //db.Database.Migrate();
+
+    try
+    {
+        await SeedData.InitAsync(db);
+    }
+    catch (Exception e)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(string.Join(" ", e.Message));
+        //throw;
+    }
+}
 
 
 

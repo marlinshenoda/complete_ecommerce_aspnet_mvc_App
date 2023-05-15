@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eTickets.Data.Data;
+using eTickets.Data;
 
 #nullable disable
 
 namespace eTickets.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230510125814_start")]
-    partial class start
+    [Migration("20230515132635_sar")]
+    partial class sar
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
