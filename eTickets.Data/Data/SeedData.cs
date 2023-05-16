@@ -27,6 +27,9 @@ namespace eTickets.Data.Data
             var cinamas = GenerateCinemas(20);
             await db.AddRangeAsync(cinamas);
 
+            var movies = GenerateMovies(6);
+            await db.AddRangeAsync(movies);
+
             //var enrollments = GenerateEnrollments(courses, students);
             //await db.AddRangeAsync(enrollments);
 
@@ -112,6 +115,47 @@ namespace eTickets.Data.Data
             }
 
             return Cinemas;
+        }
+
+        private static IEnumerable<Movie> GenerateMovies(int numberOfActors)
+        {
+            var movies = new List<Movie>();
+        
+            string[] MovieLogo =
+{
+                "http://dotnethow.net/images/movies/movie-3.jpeg",
+                "http://dotnethow.net/images/movies/movie-1.jpeg",
+                "http://dotnethow.net/images/movies/movie-4.jpeg",
+                "http://dotnethow.net/images/movies/movie-6.jpeg",
+                "http://dotnethow.net/images/movies/movie-7.jpeg",
+                "http://dotnethow.net/images/movies/movie-8.jpeg",
+
+            };
+
+            for (int i = 0; i < numberOfActors; i++)
+            {
+
+                foreach (var logo in MovieLogo)
+                {
+                   
+                        var movie = new Movie
+                        {
+                            Name = faker.Lorem.Sentence(),
+                            ImageURL = logo,
+                            Description = faker.Lorem.Lines(),
+                            Price = faker.Random.Double(100, 200),
+                            StartDate = faker.Date.Past(5),
+                            EndDate = faker.Date.Future(20),
+                            CinemaId = faker.Random.Int(1, 5),
+                            ProducerId = faker.Random.Int(1, 20),
+                            MovieCategory = faker.PickRandom<MovieCategory>(),
+                        };
+                        movies.Add(movie);
+                    }
+                
+            }
+
+            return movies;
         }
     }
 }
