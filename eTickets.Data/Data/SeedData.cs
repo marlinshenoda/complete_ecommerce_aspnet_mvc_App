@@ -144,7 +144,7 @@ namespace eTickets.Data.Data
                             ImageURL = logo,
                             Description = faker.Lorem.Lines(),
                             Price = faker.Random.Double(100, 200),
-                            StartDate = faker.Date.Past(5),
+                            StartDate = faker.Date.Past(30),
                             EndDate = faker.Date.Future(20),
                             CinemaId = faker.Random.Int(1, 5),
                             ProducerId = faker.Random.Int(1, 20),
