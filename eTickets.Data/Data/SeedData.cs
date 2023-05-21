@@ -1,6 +1,8 @@
 ﻿using Bogus;
 using eTickets.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +14,126 @@ namespace eTickets.Data.Data
     public class SeedData
     {
         private static Faker faker = null!;
-        public static async Task InitAsync(ApplicationDbContext db)
+        private static ApplicationDbContext db = default!;
+        private static RoleManager<IdentityRole> roleManager = default!;
+        private static UserManager<ApplicationUser> userManager = default!;
+
+   
+        private static async Task AddToRolesAsync(ApplicationUser admin, string[] roleNames)
+        {
+            foreach (var role in roleNames)
+            {
+                if (await userManager.IsInRoleAsync(admin, role)) continue;
+                var result = await userManager.AddToRoleAsync(admin, role);
+                if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
+            }
+        }
+
+        private static async Task<ApplicationUser> AddAdminAsync(string adminEmail, string adminPW)
+        {
+            var found = await userManager.FindByEmailAsync(adminEmail);
+
+            if (found != null) return null!;
+
+            var admin = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                FullName = "Admin",
+            };
+
+            var result = await userManager.CreateAsync(admin, adminPW);
+            if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
+
+            return admin;
+        }
+        private static async Task AddRolesAsync(string[] roleNames)
+        {
+            foreach (var roleName in roleNames)
+            {
+                if (await roleManager.RoleExistsAsync(roleName)) continue;
+                var role = new IdentityRole { Name = roleName };
+                var result = await roleManager.CreateAsync(role);
+
+                if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
+            }
+        }
+
+        public static async Task InitAsync(ApplicationDbContext db/*, IServiceProvider services*/)
         {
             if (await db.Actors.AnyAsync()) return;
 
             faker = new Faker("sv");
+            //if (db is null) throw new ArgumentNullException(nameof(db));
 
-            var actors = GenerateActors(30);
+            //ArgumentNullException.ThrowIfNull(nameof(services));
+            //// if (services is null) throw new ArgumentNullException(nameof(services));
+
+            ////   if (db.ApplicationUser.Any()) return;
+
+            //roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            //ArgumentNullException.ThrowIfNull(roleManager);
+
+            //userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            //ArgumentNullException.ThrowIfNull(userManager);
+
+            //var roleNames = new[] { "Member", "Admin" };
+            //var adminEmail = "admin@gym.se";
+            //string adminPW = "Bytmig21";
+
+
+            //await AddRolesAsync(roleNames);
+
+            //var admin = await AddAdminAsync(adminEmail, adminPW);
+
+            //await AddToRolesAsync(admin, roleNames);
+
+            var actors = GenerateActors(6);
             await db.AddRangeAsync(actors);
 
-            var producers = GenerateProducers(20);
+            var producers = GenerateProducers(6);
             await db.AddRangeAsync(producers);
 
-            var cinamas = GenerateCinemas(20);
+            var cinamas = GenerateCinemas(6);
             await db.AddRangeAsync(cinamas);
 
-            var movies = GenerateMovies(6);
-            await db.AddRangeAsync(movies);
+            var movies = GenerateMovies(6 ,cinamas, producers);
+           await db.AddRangeAsync(movies);
 
-            //var enrollments = GenerateEnrollments(courses, students);
-            //await db.AddRangeAsync(enrollments);
+            var enrollments = GenerateEnrollments(actors, movies);
+            await db.AddRangeAsync(enrollments);
 
             await db.SaveChangesAsync();
+        }
+        private static IEnumerable<Actor_Movie> GenerateEnrollments(IEnumerable<Actor> actors, IEnumerable<Movie> movies)
+        {
+
+            var enrollments = new List<Actor_Movie>();
+
+
+            foreach (var actor in actors)
+            {
+                foreach (var movie in movies)
+                {
+                   
+                        var enrollment = new Actor_Movie
+                        {
+                            Actor = actor,
+                            Movie = movie,
+                        };
+
+                        enrollments.Add(enrollment);
+                    
+
+
+                }
+            }
+
+
+
+
+            return enrollments;
+
         }
 
         private static IEnumerable<Actor> GenerateActors(int numberOfActors)
@@ -117,8 +217,9 @@ namespace eTickets.Data.Data
             return Cinemas;
         }
 
-        private static IEnumerable<Movie> GenerateMovies(int numberOfActors)
+        private static IEnumerable<Movie> GenerateMovies(int numberOfActors, IEnumerable<Cinema> cinemas, IEnumerable<Producer> producers)
         {
+
             var movies = new List<Movie>();
         
             string[] MovieLogo =
@@ -137,22 +238,26 @@ namespace eTickets.Data.Data
 
                 foreach (var logo in MovieLogo)
                 {
-                   
-                        var movie = new Movie
+                    foreach (var cinema in cinemas)
+                    {
+                        foreach (var producer in producers)
                         {
-                            Name = faker.Lorem.Sentence(),
-                            ImageURL = logo,
-                            Description = faker.Lorem.Lines(),
-                            Price = faker.Random.Double(100, 200),
-                            StartDate = faker.Date.Past(30),
-                            EndDate = faker.Date.Future(20),
-                            CinemaId = faker.Random.Int(1, 5),
-                            ProducerId = faker.Random.Int(1, 20),
-                            MovieCategory = faker.PickRandom<MovieCategory>(),
-                        };
-                        movies.Add(movie);
-                    }
-                
+                            var movie = new Movie
+                            {
+                                Name = faker.Lorem.Sentence(),
+                                ImageURL = logo,
+                                Description = faker.Lorem.Sentence(),
+                                Price = faker.Random.Double(100, 200),
+                                StartDate = faker.Date.Past(30),
+                                EndDate = faker.Date.Future(20),
+                                Cinema = cinema,
+                                Producer =producer,
+                                MovieCategory = faker.PickRandom<MovieCategory>(),
+                            };
+                            movies.Add(movie);
+                        }
+                    } 
+                }
             }
 
             return movies;

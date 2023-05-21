@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eTickets.Data.Migrations
 {
-    public partial class sar : Migration
+    public partial class ara : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

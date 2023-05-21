@@ -22,14 +22,16 @@ builder.Services.AddControllersWithViews();
 // Seeddata
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
+  //  var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var services = scope.ServiceProvider;
+    var db = services.GetRequiredService<ApplicationDbContext>();
     //db.Database.EnsureDeleted();
     //db.Database.Migrate();
 
     try
     {
-        await SeedData.InitAsync(db);
+        //SeedData.InitAsync(db, services).Wait();
+       await SeedData.InitAsync(db);
     }
     catch (Exception e)
     {
