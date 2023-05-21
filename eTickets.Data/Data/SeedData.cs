@@ -59,34 +59,34 @@ namespace eTickets.Data.Data
             }
         }
 
-        public static async Task InitAsync(ApplicationDbContext db/*, IServiceProvider services*/)
+        public static async Task InitAsync(ApplicationDbContext db, IServiceProvider services)
         {
             if (await db.Actors.AnyAsync()) return;
 
             faker = new Faker("sv");
-            //if (db is null) throw new ArgumentNullException(nameof(db));
+            if (db is null) throw new ArgumentNullException(nameof(db));
 
-            //ArgumentNullException.ThrowIfNull(nameof(services));
-            //// if (services is null) throw new ArgumentNullException(nameof(services));
+            ArgumentNullException.ThrowIfNull(nameof(services));
+             if (services is null) throw new ArgumentNullException(nameof(services));
 
-            ////   if (db.ApplicationUser.Any()) return;
+              // if (db.app.Any()) return;
 
-            //roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-            //ArgumentNullException.ThrowIfNull(roleManager);
+            roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            ArgumentNullException.ThrowIfNull(roleManager);
 
-            //userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-            //ArgumentNullException.ThrowIfNull(userManager);
+            userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            ArgumentNullException.ThrowIfNull(userManager);
 
-            //var roleNames = new[] { "Member", "Admin" };
-            //var adminEmail = "admin@gym.se";
-            //string adminPW = "Bytmig21";
+            var roleNames = new[] { "Member", "Admin" };
+            var adminEmail = "admin@gym.se";
+            string adminPW = "Bytmig21";
 
 
-            //await AddRolesAsync(roleNames);
+            await AddRolesAsync(roleNames);
 
-            //var admin = await AddAdminAsync(adminEmail, adminPW);
+            var admin = await AddAdminAsync(adminEmail, adminPW);
 
-            //await AddToRolesAsync(admin, roleNames);
+            await AddToRolesAsync(admin, roleNames);
 
             var actors = GenerateActors(6);
             await db.AddRangeAsync(actors);

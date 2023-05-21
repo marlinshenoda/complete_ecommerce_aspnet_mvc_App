@@ -30,8 +30,8 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        //SeedData.InitAsync(db, services).Wait();
-       await SeedData.InitAsync(db);
+        SeedData.InitAsync(db, services).Wait();
+     //  await SeedData.InitAsync(db);
     }
     catch (Exception e)
     {
