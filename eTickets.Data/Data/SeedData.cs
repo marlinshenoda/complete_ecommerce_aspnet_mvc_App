@@ -59,7 +59,7 @@ namespace eTickets.Data.Data
             }
         }
 
-        public static async Task InitAsync(ApplicationDbContext db, IServiceProvider services)
+        public static async Task InitAsync(ApplicationDbContext db, IServiceProvider services, string adminPW)
         {
             if (await db.Actors.AnyAsync()) return;
 
@@ -79,7 +79,6 @@ namespace eTickets.Data.Data
 
             var roleNames = new[] { "Member", "Admin" };
             var adminEmail = "admin@gym.se";
-            string adminPW = "Bytmig21";
 
 
             await AddRolesAsync(roleNames);

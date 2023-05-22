@@ -1,6 +1,7 @@
 using eTickets.Core.Entities;
 using eTickets.Data;
 using eTickets.Data.Data;
+using eTickets.Web.Exetention;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,25 +21,27 @@ var app = builder.Build();
 builder.Services.AddControllersWithViews();
 
 // Seeddata
-using (var scope = app.Services.CreateScope())
-{
-  //  var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var services = scope.ServiceProvider;
-    var db = services.GetRequiredService<ApplicationDbContext>();
-    //db.Database.EnsureDeleted();
-    //db.Database.Migrate();
+await app.SeedDataAsync();
 
-    try
-    {
-        SeedData.InitAsync(db, services).Wait();
-     //  await SeedData.InitAsync(db);
-    }
-    catch (Exception e)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(string.Join(" ", e.Message));
-        //throw;
-    }
+//using (var scope = app.Services.CreateScope())
+//{
+//  //  var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    var services = scope.ServiceProvider;
+//    var db = services.GetRequiredService<ApplicationDbContext>();
+//    //db.Database.EnsureDeleted();
+//    //db.Database.Migrate();
+
+//    try
+//    {
+//        SeedData.InitAsync(db, services).Wait();
+//     //  await SeedData.InitAsync(db);
+//    }
+//    catch (Exception e)
+//    {
+//        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+//        logger.LogError(string.Join(" ", e.Message));
+//        //throw;
+//    }
 }
 
 
