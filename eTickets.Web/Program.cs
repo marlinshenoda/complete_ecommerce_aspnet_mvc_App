@@ -42,7 +42,7 @@ await app.SeedDataAsync();
 //        logger.LogError(string.Join(" ", e.Message));
 //        //throw;
 //    }
-}
+//}
 
 
 
