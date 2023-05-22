@@ -12,8 +12,8 @@ using eTickets.Data;
 namespace eTickets.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230521152950_uint")]
-    partial class @uint
+    [Migration("20230522095753_start")]
+    partial class start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

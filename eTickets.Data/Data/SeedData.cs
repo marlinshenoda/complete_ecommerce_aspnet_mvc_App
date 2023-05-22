@@ -78,7 +78,7 @@ namespace eTickets.Data.Data
             ArgumentNullException.ThrowIfNull(userManager);
 
             var roleNames = new[] { "Member", "Admin" };
-            var adminEmail = "admin@gym.se";
+            var adminEmail = "admin@etickets.se";
 
 
             await AddRolesAsync(roleNames);
