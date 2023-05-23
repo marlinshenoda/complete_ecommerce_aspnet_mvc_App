@@ -93,10 +93,10 @@ namespace eTickets.Data.Data
             var producers = GenerateProducers(6);
             await db.AddRangeAsync(producers);
 
-            var cinamas = GenerateCinemas(6);
+            var cinamas = GenerateCinemas(5);
             await db.AddRangeAsync(cinamas);
 
-            var movies = GenerateMovies(6 ,cinamas, producers);
+            var movies = GenerateMovies(1 ,cinamas, producers);
            await db.AddRangeAsync(movies);
 
             var enrollments = GenerateEnrollments(actors, movies);
@@ -117,8 +117,8 @@ namespace eTickets.Data.Data
                    
                         var enrollment = new Actor_Movie
                         {
-                            Actor = actor,
                             Movie = movie,
+                            Actor = actor,
                         };
 
                         enrollments.Add(enrollment);
@@ -171,18 +171,10 @@ namespace eTickets.Data.Data
             return Producers;
         }
 
-        private static IEnumerable<Cinema> GenerateCinemas(int numberOfActors)
+        public static IEnumerable<Cinema> GenerateCinemas(int numberOfActors)
         {
             var Cinemas = new List<Cinema>();
-            string[] CinemaName =
-{
-                "Cinema 1",
-                "Cinema 2",
-                "Cinema 3",
-                "Cinema 4",
-                "Cinema 5",
-        
-            };
+          
             string[] CinemaLogo =
 {
                 "http://dotnethow.net/images/cinemas/cinema-1.jpeg",
@@ -191,26 +183,21 @@ namespace eTickets.Data.Data
                 "http://dotnethow.net/images/cinemas/cinema-4.jpeg",
                 "http://dotnethow.net/images/cinemas/cinema-5.jpeg",
 
-            };
-            for (int i = 0; i < numberOfActors; i++)
-            {
-                foreach (var name in CinemaName)
-                {
-                    foreach (var logo in CinemaLogo)
-                    {
-
+            }; 
+            
+            
+                        for (int i = 0; i < numberOfActors; i++)
+                            {
+              
                         var cinema = new Cinema
                         {
-
-                            //  var Courses = await GetCoursesAsync(AT, courselist, modulelist, documentlist, activitylist);
-
-                            Name = name,
-                            Logo = logo,
+                            Name = faker.Company.CatchPhrase() +"Cinema",
+                            Logo = faker.PickRandom(CinemaLogo),
                             Description = "This is the Description of the cinema",
                         };
                         Cinemas.Add(cinema);
-                    }
-                }
+                    
+                
             }
 
             return Cinemas;
@@ -220,7 +207,7 @@ namespace eTickets.Data.Data
         {
 
             var movies = new List<Movie>();
-        
+
             string[] MovieLogo =
 {
                 "http://dotnethow.net/images/movies/movie-3.jpeg",
@@ -232,30 +219,30 @@ namespace eTickets.Data.Data
 
             };
 
-            for (int i = 0; i < numberOfActors; i++)
-            {
 
-                foreach (var logo in MovieLogo)
-                {
+
+           
                     foreach (var cinema in cinemas)
                     {
                         foreach (var producer in producers)
-                        {
+                        { 
+                        for (int i = 0; i < numberOfActors; i++)
+                         {
                             var movie = new Movie
                             {
-                                Name = faker.Lorem.Sentence(),
-                                ImageURL = logo,
-                                Description = faker.Lorem.Sentence(),
-                                Price = faker.Random.Double(100, 200),
-                                StartDate = faker.Date.Past(30),
-                                EndDate = faker.Date.Future(20),
+                                Name = faker.Company.CatchPhrase(),
+                                ImageURL = faker.PickRandom(MovieLogo),
+                                Description = faker.Hacker.Verb(),
+                                Price = faker.Random.Int(100, 200),
+                                StartDate = DateTime.Now.AddDays(faker.Random.Int(-10, 10)),
+                                EndDate = DateTime.Now.AddDays(faker.Random.Int(-5, 5)),
                                 Cinema = cinema,
                                 Producer =producer,
                                 MovieCategory = faker.PickRandom<MovieCategory>(),
                             };
                             movies.Add(movie);
                         }
-                    } 
+                    //} 
                 }
             }
 
