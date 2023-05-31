@@ -32,21 +32,12 @@ namespace eTickets.Web.Controllers
         }
 
         // GET: Actors/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Actors == null)
-            {
-                return NotFound();
-            }
+            var actorDetails = await _service.GetByIdAsync(id);
 
-            var actor = await _context.Actors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (actor == null)
-            {
-                return NotFound();
-            }
-
-            return View(actor);
+            if (actorDetails == null) return View("NotFound");
+            return View(actorDetails);
         }
 
         // GET: Actors/Create
@@ -62,29 +53,22 @@ namespace eTickets.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProfilePictureURL,FullName,Bio")] Actor actor)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(actor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(actor);
             }
-            return View(actor);
+            await _service.AddAsync(actor);
+            return RedirectToAction(nameof(Index));
+          
+           
         }
 
         // GET: Actors/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Actors == null)
-            {
-                return NotFound();
-            }
-
-            var actor = await _context.Actors.FindAsync(id);
-            if (actor == null)
-            {
-                return NotFound();
-            }
-            return View(actor);
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null) return View("NotFound");
+            return View(actorDetails);
         }
 
         // POST: Actors/Edit/5
@@ -94,50 +78,20 @@ namespace eTickets.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ProfilePictureURL,FullName,Bio")] Actor actor)
         {
-            if (id != actor.Id)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return View(actor);
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(actor);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ActorExists(actor.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(actor);
+            await _service.UpdateAsync(id, actor);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Actors/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Actors == null)
-            {
-                return NotFound();
-            }
-
-            var actor = await _context.Actors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (actor == null)
-            {
-                return NotFound();
-            }
-
-            return View(actor);
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null) return View("NotFound");
+            return View(actorDetails);
         }
 
         // POST: Actors/Delete/5
@@ -145,17 +99,10 @@ namespace eTickets.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Actors == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Actors'  is null.");
-            }
-            var actor = await _context.Actors.FindAsync(id);
-            if (actor != null)
-            {
-                _context.Actors.Remove(actor);
-            }
-            
-            await _context.SaveChangesAsync();
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null) return View("NotFound");
+
+            await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
