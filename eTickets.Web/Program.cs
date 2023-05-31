@@ -1,6 +1,8 @@
 using eTickets.Core.Entities;
+using eTickets.Core.Interfaces;
 using eTickets.Data;
 using eTickets.Data.Data;
+using eTickets.Data.Repositories;
 using eTickets.Web.Exetention;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'MyPortolioContext' not found.")));
 
 
+builder.Services.AddScoped<IActorsRepository, ActorsRepository>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -26,8 +29,13 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 }).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 var app = builder.Build();
-builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllersWithViews();
+//Services configuration
+//services.AddScoped<IProducersService, ProducersService>();
+//services.AddScoped<ICinemasService, CinemasService>();
+//services.AddScoped<IMoviesService, MoviesService>();
+//services.AddScoped<IOrdersService, OrdersService>();
 // Seeddata
 await app.SeedDataAsync();
 

@@ -7,22 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eTickets.Core.Entities;
 using eTickets.Data;
+using eTickets.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eTickets.Web.Controllers
 {
+   // [Authorize(Roles = Admin)]
+
     public class ActorsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IActorsRepository _service;
 
-        public ActorsController(ApplicationDbContext context)
+        public ActorsController(IActorsRepository service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Actors
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Actors.ToListAsync());    
+            var data = await _service.GetAllAsync();
+            return View(data);
         }
 
         // GET: Actors/Details/5

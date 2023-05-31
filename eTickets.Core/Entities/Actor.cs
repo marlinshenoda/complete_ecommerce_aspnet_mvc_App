@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using eTickets.Core.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace eTickets.Core.Entities
 {
     #nullable disable
-    public class Actor
+    public class Actor:IEntityBase
     {
         public int Id { get; set; }
 
